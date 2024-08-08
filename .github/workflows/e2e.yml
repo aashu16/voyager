@@ -37,11 +37,11 @@ jobs:
         volumes:
           - ${{github.workspace}}/e2e/ci/lemmy.hjson:/config/config.hjson
         options: --name lemmy
-      caddy:
-        image: caddy
-        volumes:
-          - ${{github.workspace}}/e2e/ci/Caddyfile:/etc/caddy/Caddyfile
-        options: --name caddy
+      # caddy:
+      #   image: caddy
+      #   volumes:
+      #     - ${{github.workspace}}/e2e/ci/Caddyfile:/etc/caddy/Caddyfile
+      #   options: --name caddy
     steps:
       - uses: actions/checkout@v4
       - run: corepack enable
@@ -49,10 +49,10 @@ jobs:
         uses: docker://docker
         with:
           args: docker restart lemmy
-      - name: Restart caddy
-        uses: docker://docker
-        with:
-          args: docker restart caddy
+      # - name: Restart caddy
+      #   uses: docker://docker
+      #   with:
+      #     args: docker restart caddy
       - uses: actions/setup-node@v4
         with:
           node-version: 20
