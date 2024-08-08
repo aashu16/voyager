@@ -11,10 +11,37 @@ jobs:
     name: Run Playwright tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.43.0-jammy
+      image: mcr.microsoft.com/playwright:v1.45.1-jammy
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: lemmy
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: lemmy
+        # volumes:
+        #   - ./volumes:/var/lib/postgresql/data:Z
+      lemmy:
+        image: dessalines/lemmy:0.19.5
+        volumes:
+          - ${{github.workspace}}/e2e/ci/lemmy.hjson:/config/config.hjson
+        options: --name lemmy
+      caddy:
+        image: caddy
+        volumes:
+          - ${{github.workspace}}/e2e/ci/Caddyfile:/etc/caddy/Caddyfile
+        options: --name caddy
     steps:
       - uses: actions/checkout@v4
       - run: corepack enable
+      - name: Restart lemmy
+        uses: docker://docker
+        with:
+          args: docker restart lemmy
+      - name: Restart caddy
+        uses: docker://docker
+        with:
+          args: docker restart caddy
       - uses: actions/setup-node@v4
         with:
           node-version: 20
