@@ -1,0 +1,7 @@
+localhost
+
+reverse_proxy 127.0.0.1:8536
+
+header X-Real-IP $remote_addr;
+header Host $host;
+header X-Forwarded-For $proxy_add_x_forwarded_for;
