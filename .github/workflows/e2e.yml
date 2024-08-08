@@ -13,10 +13,10 @@ on:
         - debug
   push:
     branches:
-      - main
+      - update-e2e-action
   pull_request:
     branches:
-      - main
+      - update-e2e-action
 jobs:
   playwright:
     name: Run Playwright tests
