@@ -7,7 +7,7 @@ import {
 
 const url = "http://localhost/";
 
-test.only("create user post", async ({ page }) => {
+test("create user post", async ({ page }) => {
   await page.goto("/");
   await page.waitForURL("/posts/localhost/all");
   await page.goto("/profile");
@@ -81,7 +81,7 @@ test.only("create user post", async ({ page }) => {
   await page.getByRole("button", { name: "Confirm" }).click();
 });
 
-test.only("login user", async ({ page }) => {
+test("login user", async ({ page }) => {
   await page.goto("/");
   await page.waitForURL("/posts/localhost/all");
   await page.goto("/profile");
