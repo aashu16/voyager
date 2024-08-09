@@ -53,7 +53,7 @@ jobs:
       #   with:
       #     args: docker restart caddy
       - name: Start Lemmy server
-        run: docker compose -f e2e/ci/docker-compose.yml up -d
+        run: sudo docker compose -f e2e/ci/docker-compose.yml up -d
       - name: Start Caddy
         run: sudo e2e/ci/bin/caddy start --config e2e/ci/Caddyfile
       - run: corepack enable
