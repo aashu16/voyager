@@ -1,0 +1,44 @@
+services:
+  lemmy:
+    image: dessalines/lemmy:0.19.5
+    platform: linux/x86_64
+    restart: unless-stopped
+    environment:
+      - RUST_LOG="warn,lemmy_server=debug,lemmy_api=debug,lemmy_api_common=debug,lemmy_api_crud=debug,lemmy_apub=debug,lemmy_db_schema=debug,lemmy_db_views=debug,lemmy_db_views_actor=debug,lemmy_db_views_moderator=debug,lemmy_routes=debug,lemmy_utils=debug,lemmy_websocket=debug"
+      - RUST_BACKTRACE=full
+    ports:
+      - "8536:8536"
+    volumes:
+      - ./lemmy.hjson:/config/config.hjson:Z
+    depends_on:
+      - postgres
+      - pictrs
+
+  pictrs:
+    image: asonix/pictrs:0.5.16
+    hostname: pictrs
+    environment:
+      - PICTRS_OPENTELEMETRY_URL=http://otel:4137
+      - PICTRS__API_KEY=API_KEY
+      - RUST_LOG=debug
+      - RUST_BACKTRACE=full
+      - PICTRS__MEDIA__VIDEO_CODEC=vp9
+      - PICTRS__MEDIA__GIF__MAX_WIDTH=256
+      - PICTRS__MEDIA__GIF__MAX_HEIGHT=256
+      - PICTRS__MEDIA__GIF__MAX_AREA=65536
+      - PICTRS__MEDIA__GIF__MAX_FRAME_COUNT=400
+    user: 991:991
+    volumes:
+      - ./volumes/pictrs:/mnt:Z
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    hostname: postgres
+    environment:
+      - POSTGRES_USER=lemmy
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=lemmy
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data:Z
+    restart: unless-stopped
