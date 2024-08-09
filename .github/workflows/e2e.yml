@@ -55,7 +55,7 @@ jobs:
       - name: Start Lemmy server
         run: docker compose -f e2e/ci/docker-compose.yml up -d
       - name: Start Caddy
-        run: e2e/ci/bin/caddy --config e2e/ci/Caddyfile
+        run: e2e/ci/bin/caddy start --config e2e/ci/Caddyfile
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
