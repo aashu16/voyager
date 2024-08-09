@@ -28,7 +28,7 @@ services:
       - PICTRS__MEDIA__GIF__MAX_HEIGHT=256
       - PICTRS__MEDIA__GIF__MAX_AREA=65536
       - PICTRS__MEDIA__GIF__MAX_FRAME_COUNT=400
-    user: 991:991
+    user: ${USER_ID}:${GROUP_ID}
     volumes:
       - ./volumes/pictrs:/mnt:Z
     restart: unless-stopped
@@ -36,7 +36,7 @@ services:
   postgres:
     image: postgres:16
     hostname: postgres
-    user: root
+    user: ${USER_ID}:${GROUP_ID}
     environment:
       - POSTGRES_USER=lemmy
       - POSTGRES_PASSWORD=password

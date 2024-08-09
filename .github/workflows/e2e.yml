@@ -21,41 +21,12 @@ jobs:
   playwright:
     name: Run Playwright tests
     runs-on: ubuntu-latest
-    # container:
-    #   image: mcr.microsoft.com/playwright:v1.45.1-jammy
-    # services:
-    #   postgres:
-    #     image: postgres
-    #     env:
-    #       POSTGRES_USER: lemmy
-    #       POSTGRES_PASSWORD: password
-    #       POSTGRES_DB: lemmy
-    #     # volumes:
-    #     #   - ./volumes:/var/lib/postgresql/data:Z
-    #   lemmy:
-    #     image: dessalines/lemmy:0.19.5
-    #     volumes:
-    #       - ${{github.workspace}}/e2e/ci/lemmy.hjson:/config/config.hjson
-    #     options: --name lemmy
-    #   # caddy:
-    #   #   image: caddy
-    #   #   volumes:
-    #   #     - ${{github.workspace}}/e2e/ci/Caddyfile:/etc/caddy/Caddyfile
-    #   #   options: --name caddy
     steps:
       - uses: actions/checkout@v4
-      # - name: Restart lemmy
-      #   uses: docker://docker
-      #   with:
-      #     args: docker restart lemmy
-      # - name: Restart caddy
-      #   uses: docker://docker
-      #   with:
-      #     args: docker restart caddy
       - name: Start Lemmy server
-        run: sudo docker compose -f e2e/ci/docker-compose.yml up -d
+        run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
       - name: Start Caddy
-        run: sudo e2e/ci/bin/caddy start --config e2e/ci/Caddyfile
+        run: e2e/ci/bin/caddy start --config e2e/ci/Caddyfile
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
@@ -69,6 +40,3 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run tests
         run: pnpm run test:e2e
-        # env:
-        #   HOME: /root
-        # run: env HOME=/root pnpm test:e2e
