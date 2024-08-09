@@ -18,7 +18,6 @@ services:
   pictrs:
     image: asonix/pictrs:0.5.16
     hostname: pictrs
-    user: root
     environment:
       - PICTRS_OPENTELEMETRY_URL=http://otel:4137
       - PICTRS__API_KEY=API_KEY
