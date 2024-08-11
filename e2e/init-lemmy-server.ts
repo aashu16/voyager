@@ -18,15 +18,19 @@ export const newLemmyClientWithCredentials = async (
   username_or_email: string,
   password: string,
 ) => {
-  const lemmyClient = new LemmyHttp(instanceUrl);
+  const lemmyClient = new LemmyHttp(instanceUrl, { fetchFunction: fetch });
 
-  const { jwt } = await login(lemmyClient, {
-    username_or_email,
-    password,
-  });
-  lemmyClient.setHeaders({ Authorization: `Bearer ${jwt}` });
+  try {
+    const { jwt } = await login(lemmyClient, {
+      username_or_email,
+      password,
+    });
+    lemmyClient.setHeaders({ Authorization: `Bearer ${jwt}` });
 
-  return lemmyClient;
+    return lemmyClient;
+  } catch (error) {
+    throw new Error("nvlcwc:" + error);
+  }
 };
 
 export const listRegistrationApplications = async (
