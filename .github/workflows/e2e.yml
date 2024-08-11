@@ -1,11 +1,5 @@
 name: Run e2e tests
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: workflow_dispatch
 jobs:
   playwright:
     name: Run Playwright tests
