@@ -10,7 +10,7 @@
     "build": "./build.sh",
     "preview": "vite preview",
     "test": "vitest",
-    "test:e2e": "VITE_FORCE_LEMMY_INSECURE=0 VITE_CUSTOM_LEMMY_SERVERS=localhost:8536 playwright test",
+    "test:e2e": "playwright test",
     "test:typecheck": "tsc",
     "lint": "eslint src --max-warnings=0",
     "lint:formatting": "prettier --check .",

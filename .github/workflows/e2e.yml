@@ -17,6 +17,9 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build project
         run: pnpm build
+        env:
+          VITE_FORCE_LEMMY_INSECURE: 1
+          VITE_CUSTOM_LEMMY_SERVERS: localhost:8536
       - name: Install Playwright dependencies
         run: npx playwright install --with-deps
       - name: Run Playwright tests
