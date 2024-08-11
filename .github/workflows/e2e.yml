@@ -15,13 +15,6 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build project
-        run: pnpm build
-        env:
-          VITE_FORCE_LEMMY_INSECURE: 1
-          VITE_CUSTOM_LEMMY_SERVERS: localhost:8536
-      - name: Install Playwright dependencies
-        run: npx playwright install --with-deps
       - name: Check if lemmy is running
         run: |
           echo "LOG --> Checking localhost..."
@@ -30,6 +23,13 @@ jobs:
           curl -v http://127.0.0.1:8536
           echo "LOG --> Look for LISTENing ports"
           sudo lsof -i -P -n | grep LISTEN
+      - name: Build project
+        run: pnpm build
+        env:
+          VITE_FORCE_LEMMY_INSECURE: 1
+          VITE_CUSTOM_LEMMY_SERVERS: localhost:8536
+      - name: Install Playwright dependencies
+        run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: pnpm run test:e2e
       - uses: actions/upload-artifact@v4
