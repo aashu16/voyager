@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { newLemmyClientWithCredentials } from "./init-lemmy-server";
 
-const url = "http://127.0.0.1:8536/";
+const url = "http://127.0.0.1:8536";
 
 test("create user post", async ({ page }) => {
   await page.goto("/");
