@@ -4,10 +4,10 @@ jobs:
   playwright:
     name: Run Playwright tests
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.46.0-jammy
     steps:
       - uses: actions/checkout@v4
+      - name: Start Lemmy server
+        run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
@@ -17,5 +17,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build project
         run: pnpm build
-      - name: Run tests
-        run: env HOME=/root pnpm test:e2e
+      - name: Install Playwright dependencies
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: pnpm run test:e2e
