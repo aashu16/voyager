@@ -48,7 +48,7 @@ jobs:
       - name: Run Playwright tests
         run: |
           # sh e2e/ci/launch_lemmy.sh
-          run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
+          USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
           pnpm run test:e2e
       # - uses: actions/upload-artifact@v4
       #   if: ${{ !cancelled() }}
