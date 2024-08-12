@@ -15,8 +15,8 @@ jobs:
     #       POSTGRES_DB: lemmy
     steps:
       - uses: actions/checkout@v4
-      # - name: Start Lemmy server
-      #   run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
+      - name: Start Lemmy server
+        run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
       # - uses: moonrepo/setup-rust@v1
       # - name: Fetch lemmy
       #   run: |
@@ -48,8 +48,8 @@ jobs:
       - name: Run Playwright tests
         run: |
           # sh e2e/ci/launch_lemmy.sh
-          USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
-          sleep 10
+          # USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
+          # sleep 10
           echo "LOG --> Checking 127.0.0.1..."
           curl -v http://127.0.0.1:8536
           NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm run test:e2e
