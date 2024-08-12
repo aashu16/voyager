@@ -4,10 +4,23 @@ jobs:
   playwright:
     name: Run Playwright tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: lemmy
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: lemmy
     steps:
       - uses: actions/checkout@v4
-      - name: Start Lemmy server
-        run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
+      # - name: Start Lemmy server
+      #   run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
+      - name: Fetch lemmy
+        run: |
+          git clone https://github.com/lemmynet/lemmy
+          cargo run --bin lemmy_server --release &
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
@@ -21,8 +34,8 @@ jobs:
           curl -v http://localhost:8536
           echo "LOG --> Checking 127.0.0.1..."
           curl -v http://127.0.0.1:8536
-          echo "LOG --> Look for LISTENing ports"
-          sudo lsof -i -P -n | grep LISTEN
+          # echo "LOG --> Look for LISTENing ports"
+          # sudo lsof -i -P -n | grep LISTEN
       - name: Build project
         run: pnpm build
         env:
