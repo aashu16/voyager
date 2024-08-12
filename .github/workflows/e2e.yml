@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       # - name: Start Lemmy server
       #   run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
+      - uses: moonrepo/setup-rust@v1
       - name: Fetch lemmy
         run: |
           git clone https://github.com/lemmynet/lemmy
