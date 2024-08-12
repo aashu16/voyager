@@ -21,6 +21,7 @@ jobs:
       - name: Fetch lemmy
         run: |
           git clone https://github.com/lemmynet/lemmy
+          cd lemmy
           cargo run --bin lemmy_server --release &
       - run: corepack enable
       - uses: actions/setup-node@v4
