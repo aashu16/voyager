@@ -32,10 +32,10 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Check if lemmy is running
         run: |
-          echo "LOG --> Checking localhost..."
-          curl -v http://localhost:8536
           echo "LOG --> Checking 127.0.0.1..."
           curl -v http://127.0.0.1:8536
+          echo "LOG --> Checking localhost..."
+          curl -v http://localhost:8536
           # echo "LOG --> Look for LISTENing ports"
           # sudo lsof -i -P -n | grep LISTEN
       - name: Build project
