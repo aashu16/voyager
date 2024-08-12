@@ -4,25 +4,25 @@ jobs:
   playwright:
     name: Run Playwright tests
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: lemmy
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: lemmy
+    # services:
+    #   postgres:
+    #     image: postgres
+    #     ports:
+    #       - 5432:5432
+    #     env:
+    #       POSTGRES_USER: lemmy
+    #       POSTGRES_PASSWORD: password
+    #       POSTGRES_DB: lemmy
     steps:
       - uses: actions/checkout@v4
       # - name: Start Lemmy server
       #   run: USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose -f e2e/ci/docker-compose.yml up -d
-      - uses: moonrepo/setup-rust@v1
-      - name: Fetch lemmy
-        run: |
-          git clone https://github.com/lemmynet/lemmy
-          cd lemmy
-          cargo run --bin lemmy_server --release &
+      # - uses: moonrepo/setup-rust@v1
+      # - name: Fetch lemmy
+      #   run: |
+      #     git clone https://github.com/lemmynet/lemmy
+      #     cd lemmy
+      #     cargo run --bin lemmy_server --release &
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
@@ -30,14 +30,14 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Check if lemmy is running
-        run: |
-          echo "LOG --> Checking 127.0.0.1..."
-          curl -v http://127.0.0.1:8536
-          echo "LOG --> Checking localhost..."
-          curl -v http://localhost:8536
-          # echo "LOG --> Look for LISTENing ports"
-          # sudo lsof -i -P -n | grep LISTEN
+      # - name: Check if lemmy is running
+      #   run: |
+      #     echo "LOG --> Checking 127.0.0.1..."
+      #     curl -v http://127.0.0.1:8536
+      #     echo "LOG --> Checking localhost..."
+      #     curl -v http://localhost:8536
+      # echo "LOG --> Look for LISTENing ports"
+      # sudo lsof -i -P -n | grep LISTEN
       - name: Build project
         run: pnpm build
         env:
@@ -46,10 +46,12 @@ jobs:
       - name: Install Playwright dependencies
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: pnpm run test:e2e
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
+        run: |
+          sh e2e/ci/launch_lemmy.sh
+          pnpm run test:e2e
+      # - uses: actions/upload-artifact@v4
+      #   if: ${{ !cancelled() }}
+      #   with:
+      #     name: playwright-report
+      #     path: playwright-report/
+      #     retention-days: 7
