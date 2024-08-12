@@ -24,7 +24,7 @@ test("create user post", async ({ page }) => {
 
   await page.getByRole("button", { name: "Get Started" }).click();
 
-  await page.getByRole("button", { name: "Join localhost:8536" }).click();
+  await page.getByRole("button", { name: "Leave localhost:8536" }).click();
 });
 
 test("create user post 2", async ({ page }) => {
@@ -36,7 +36,7 @@ test("create user post 2", async ({ page }) => {
     page.getByText("You are browsing localhost:8536 as"),
   ).toBeVisible();
 
-  await page.getByRole("button", { name: "Get Started" }).click();
+  await page.getByRole("button", { name: "Get Unstarted" }).click();
 
   await page.getByRole("button", { name: "Join localhost:8536" }).click();
 });
