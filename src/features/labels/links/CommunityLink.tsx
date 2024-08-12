@@ -31,9 +31,8 @@ const StyledItemIcon = styled(ItemIcon)`
 `;
 
 const SubscribedIcon = styled(IonIcon)`
-  color: var(--ion-color-danger);
+  color: var(--ion-color-primary);
   vertical-align: middle;
-  font-size: 0.85em;
 
   margin-bottom: 1px;
   margin-left: 2px;
@@ -52,6 +51,7 @@ interface CommunityLinkProps {
   tinyIcon?: boolean;
   disableInstanceClick?: boolean;
   hideIcon?: boolean;
+  hideSubscribed?: boolean;
 
   className?: string;
 }
@@ -64,6 +64,7 @@ export default function CommunityLink({
   tinyIcon,
   disableInstanceClick,
   hideIcon,
+  hideSubscribed,
 }: CommunityLinkProps) {
   const [present] = useIonActionSheet();
 
@@ -127,7 +128,9 @@ export default function CommunityLink({
   const end = (
     <>
       {instance}
-      {showSubscribed && isSubscribed && <SubscribedIcon icon={heart} />}
+      {showSubscribed && !hideSubscribed && isSubscribed && (
+        <SubscribedIcon icon={heart} />
+      )}
     </>
   );
 
@@ -163,7 +166,7 @@ const onStart: LongPressOptions["onStart"] = (e) => {
 function useShowSubscribedIcon() {
   const feedEnabled = useContext(ShowSubscribedIconContext);
   const subscribedIcon = useAppSelector(
-    (state) => state.settings.general.subscribedIcon,
+    (state) => state.settings.appearance.posts.subscribedIcon,
   );
 
   switch (subscribedIcon) {
